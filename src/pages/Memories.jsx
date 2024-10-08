@@ -1,10 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
-const imageCount = 15; // Adjust this to match the number of images you have
+const imageCount = 17; // Update this to 17 since you have 17 images
 
 const MemoryImage = ({ number, onClick }) => {
-  const src = `/images/aimg${number}.png`; // This path is relative to the public folder
+  const src = `/atto-love-journey/images/aimg${number}.png`;
 
   return (
     <motion.div
@@ -17,6 +17,10 @@ const MemoryImage = ({ number, onClick }) => {
         src={src} 
         alt={`Memory ${number}`} 
         className="w-full h-full object-cover"
+        onError={(e) => {
+          console.error(`Failed to load image: ${src}`);
+          e.target.src = 'https://via.placeholder.com/150'; // Placeholder image
+        }}
       />
     </motion.div>
   );
@@ -87,12 +91,12 @@ function Memories() {
             onPrev={() => {
               const currentNumber = parseInt(selectedImage.match(/\d+/)[0]);
               const prevNumber = ((currentNumber - 2 + imageCount) % imageCount) + 1;
-              setSelectedImage(`/images/aimg${prevNumber}.png`);
+              setSelectedImage(`/atto-love-journey/images/aimg${prevNumber}.png`);
             }}
             onNext={() => {
               const currentNumber = parseInt(selectedImage.match(/\d+/)[0]);
               const nextNumber = (currentNumber % imageCount) + 1;
-              setSelectedImage(`/images/aimg${nextNumber}.png`);
+              setSelectedImage(`/atto-love-journey/images/aimg${nextNumber}.png`);
             }}
           />
         )}
