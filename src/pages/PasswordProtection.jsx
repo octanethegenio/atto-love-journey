@@ -6,7 +6,7 @@ const PasswordProtection = ({ onCorrectPassword, children }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password === 'your-secret-password') {
+    if (password === 'Atto$200006') {
       setIsAuthenticated(true);
       onCorrectPassword();
     } else {
