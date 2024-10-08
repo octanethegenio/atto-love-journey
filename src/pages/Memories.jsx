@@ -1,18 +1,24 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
-const MemoryImage = ({ number, onClick }) => {
-  const imagePath = `${import.meta.env.BASE_URL}images/aimg${number}.png`;
+// Import all images
+import img1 from '../assets/images/aimg1.png';
+import img2 from '../assets/images/aimg2.png';
+// ... import all other images ...
+import img15 from '../assets/images/aimg15.png';
 
+const images = [img1, img2, /* ... */, img15];
+
+const MemoryImage = ({ src, number, onClick }) => {
   return (
     <motion.div
       className="w-full aspect-square bg-gray-200 rounded-lg shadow-md overflow-hidden cursor-pointer"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      onClick={() => onClick(imagePath)}
+      onClick={() => onClick(src)}
     >
       <img 
-        src={imagePath} 
+        src={src} 
         alt={`Memory ${number}`} 
         className="w-full h-full object-cover"
       />
@@ -61,20 +67,6 @@ const ImageModal = ({ src, onClose, onPrev, onNext }) => (
 
 function Memories() {
   const [selectedImage, setSelectedImage] = useState(null);
-  const imageNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-  const images = imageNumbers.map(number => `${import.meta.env.BASE_URL}images/aimg${number}.png`);
-
-  const handlePrev = () => {
-    const currentIndex = images.indexOf(selectedImage);
-    const prevIndex = (currentIndex - 1 + images.length) % images.length;
-    setSelectedImage(images[prevIndex]);
-  };
-
-  const handleNext = () => {
-    const currentIndex = images.indexOf(selectedImage);
-    const nextIndex = (currentIndex + 1) % images.length;
-    setSelectedImage(images[nextIndex]);
-  };
 
   return (
     <motion.div
@@ -85,9 +77,9 @@ function Memories() {
     >
       <h2 className="text-3xl font-dancing-script text-red-600 mb-6 text-center">Our Precious Memories</h2>
       <div className="flex flex-wrap justify-center gap-3">
-        {imageNumbers.map((number, index) => (
-          <div key={number} className={`w-full sm:w-1/2 md:w-1/3 lg:w-1/6 ${index >= imageNumbers.length - 3 ? 'lg:w-1/5' : ''}`}>
-            <MemoryImage number={number} onClick={setSelectedImage} />
+        {images.map((src, index) => (
+          <div key={index} className={`w-full sm:w-1/2 md:w-1/3 lg:w-1/6 ${index >= images.length - 3 ? 'lg:w-1/5' : ''}`}>
+            <MemoryImage src={src} number={index + 1} onClick={setSelectedImage} />
           </div>
         ))}
       </div>
@@ -96,8 +88,16 @@ function Memories() {
           <ImageModal 
             src={selectedImage} 
             onClose={() => setSelectedImage(null)}
-            onPrev={handlePrev}
-            onNext={handleNext}
+            onPrev={() => {
+              const currentIndex = images.indexOf(selectedImage);
+              const prevIndex = (currentIndex - 1 + images.length) % images.length;
+              setSelectedImage(images[prevIndex]);
+            }}
+            onNext={() => {
+              const currentIndex = images.indexOf(selectedImage);
+              const nextIndex = (currentIndex + 1) % images.length;
+              setSelectedImage(images[nextIndex]);
+            }}
           />
         )}
       </AnimatePresence>
