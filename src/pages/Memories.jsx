@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
 const MemoryImage = ({ number, onClick }) => {
-  const imagePath = `/images/aimg${number}.png`;
+  const imagePath = `${import.meta.env.BASE_URL}images/aimg${number}.png`;
 
   return (
     <motion.div
@@ -62,7 +62,7 @@ const ImageModal = ({ src, onClose, onPrev, onNext }) => (
 function Memories() {
   const [selectedImage, setSelectedImage] = useState(null);
   const imageNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-  const images = imageNumbers.map(number => `/images/aimg${number}.png`);
+  const images = imageNumbers.map(number => `${import.meta.env.BASE_URL}images/aimg${number}.png`);
 
   const handlePrev = () => {
     const currentIndex = images.indexOf(selectedImage);
