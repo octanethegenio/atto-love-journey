@@ -1,15 +1,11 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
-// Import all images
-import img1 from '../assets/images/aimg1.png';
-import img2 from '../assets/images/aimg2.png';
-// ... import all other images ...
-import img15 from '../assets/images/aimg15.png';
+const imageCount = 15; // Adjust this to match the number of images you have
 
-const images = [img1, img2, /* ... */, img15];
+const MemoryImage = ({ number, onClick }) => {
+  const src = `/images/aimg${number}.png`; // This path is relative to the public folder
 
-const MemoryImage = ({ src, number, onClick }) => {
   return (
     <motion.div
       className="w-full aspect-square bg-gray-200 rounded-lg shadow-md overflow-hidden cursor-pointer"
@@ -77,9 +73,9 @@ function Memories() {
     >
       <h2 className="text-3xl font-dancing-script text-red-600 mb-6 text-center">Our Precious Memories</h2>
       <div className="flex flex-wrap justify-center gap-3">
-        {images.map((src, index) => (
-          <div key={index} className={`w-full sm:w-1/2 md:w-1/3 lg:w-1/6 ${index >= images.length - 3 ? 'lg:w-1/5' : ''}`}>
-            <MemoryImage src={src} number={index + 1} onClick={setSelectedImage} />
+        {Array.from({ length: imageCount }, (_, i) => i + 1).map((number) => (
+          <div key={number} className={`w-full sm:w-1/2 md:w-1/3 lg:w-1/6 ${number > imageCount - 3 ? 'lg:w-1/5' : ''}`}>
+            <MemoryImage number={number} onClick={setSelectedImage} />
           </div>
         ))}
       </div>
@@ -89,14 +85,14 @@ function Memories() {
             src={selectedImage} 
             onClose={() => setSelectedImage(null)}
             onPrev={() => {
-              const currentIndex = images.indexOf(selectedImage);
-              const prevIndex = (currentIndex - 1 + images.length) % images.length;
-              setSelectedImage(images[prevIndex]);
+              const currentNumber = parseInt(selectedImage.match(/\d+/)[0]);
+              const prevNumber = ((currentNumber - 2 + imageCount) % imageCount) + 1;
+              setSelectedImage(`/images/aimg${prevNumber}.png`);
             }}
             onNext={() => {
-              const currentIndex = images.indexOf(selectedImage);
-              const nextIndex = (currentIndex + 1) % images.length;
-              setSelectedImage(images[nextIndex]);
+              const currentNumber = parseInt(selectedImage.match(/\d+/)[0]);
+              const nextNumber = (currentNumber % imageCount) + 1;
+              setSelectedImage(`/images/aimg${nextNumber}.png`);
             }}
           />
         )}
